@@ -17,7 +17,7 @@ const HeaderContainer = styled.div`
     padding-right: 160px;
     padding-left: 160px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
 `;
 
 const Button = styled.div`
