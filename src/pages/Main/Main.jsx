@@ -11,12 +11,11 @@ import arrowIcon2 from "../../assets/images/arrow_image2.png";
 import arrowIcon3 from "../../assets/images/arrow_image3.png";
 
 const MainContainer = styled.div`
-padding: 40px 166px;
+padding: 40px 160px;
 `;
 
 const FilterContainer = styled.div`
 display: flex;
-gap: 12px;
 margin-bottom:61px;
 justify-content: space-between;
 `;
@@ -29,28 +28,25 @@ const FilterLeft = styled.div`
 const FilterButton = styled.button`
 display: flex;
 align-items: center;
-gap: 6px;
+gap: 5px;
 padding: 8px 16px;
-background-color: #F2F2F2;
 border: none;
 border-radius: 20px;
-font-size: 14px;
 color: #616161;
-
-&:hover {
-    background-color: #ebe0e0;
-}
+background-color: #F2F2F2;
+font-family: Pretendard;
+font-size: 13px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
 
 &::after {
     content: "";
-    display: inline-block;
     width: 10px;
-    height: 6px;
+    height: 5px;
+    aspect-ratio: 2/1;
     background-image: url(${arrowIcon});
-    background-size: contain;
-    background-repeat: no-repeat;
     background-position: center;
-    margin-top: 1px;
 }
 `;
 
@@ -60,14 +56,11 @@ const SortWrapper = styled.div`
 
 const DropdownContent = styled.div`
   position: absolute;
-  top: 25px;
-  right: 0;
   background-color: white;
   min-width: 130px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  padding: 8px 0;
-  z-index: 1000;
+  padding: 8px;
 
   div {
     padding: 7px 10px;
@@ -145,7 +138,7 @@ display: flex;
 flex-direction: column;
 gap: 5px;
 .name {font-size: 11px; color: #333333;}
-.price {font-size: 11px; font-weight: 400; color: #000000;;}
+.price {font-size: 11px; font-weight: 400; color: #000000;}
 .review {font-size: 11px; color: #A7A7A7;}
 `;
 
@@ -159,7 +152,6 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
 `;
 
 const ModalContent = styled.div`
@@ -221,10 +213,6 @@ const SizeGroup = styled.div`
   margin-bottom: 12px;
   justify-content: flex-start;
   
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-
   button {
     min-width: 45px;
     padding: 10px 12px;
