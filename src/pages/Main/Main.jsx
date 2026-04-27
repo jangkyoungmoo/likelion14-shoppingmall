@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import * as S from "./Main.style";
 import { products } from "./Main.data";
+import { useNavigate } from "react-router-dom";
 
 export default function Main() {
+  const navigate = useNavigate();
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [sortType, setSortType] = useState('정렬순');
   const [openModalType, setOpenModalType] = useState(null);
 
   const closeModal = () => {
     setOpenModalType(null);
-    setIsSortOpen(false);
+    setIsSortOpen(false); 
   };
 
   return (
@@ -42,14 +44,14 @@ export default function Main() {
 
       <S.ProductGrid>
         {products.map((item) => (
-          <S.Card key={item.id}>
-             <S.ImageBox>
-              <img src={item.img} alt={item.name} />
+          <S.Card key={item.itemId} onClick={() => navigate(`/product/${item.id}`)}>
+             <S.ImageBox> 
+              <img src={item.imageUrl} alt={item.name} />
             </S.ImageBox>
             <S.Info>
               <div className="name">{item.name}</div>
               <div className="price">{item.price}</div>
-              <div className="review">리뷰 {item.review}</div>
+              <div className="review">리뷰 {item.reviewcount  }</div>
             </S.Info>
           </S.Card>
         ))}
@@ -139,3 +141,4 @@ export default function Main() {
     </S.MainContainer>
   );
 }
+
