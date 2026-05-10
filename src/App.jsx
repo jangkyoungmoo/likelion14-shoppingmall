@@ -1,10 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProductDetail from "../src/pages/ProductDetail/ProductDetail.jsx";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import RootLayout from "../src/layout/RootLayout.jsx";
 import Main from "../src/pages/Main/Main.jsx"
-import { products } from "../src/pages/Main/Main.data.jsx";
-
-
+import ItemDetail from "../src/pages/ItemDetail/ItemDetail.jsx";
+import ProductAdd from "../src/pages/ItemDetail/ProductAdd";
+import ProductEdit from "../src/pages/ItemDetail/ProductEdit.jsx";
 
 function App() {
   return (
@@ -12,8 +11,9 @@ function App() {
       <Routes>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Main />} />
-          <Route path="/add" element={<></>}/>
-          <Route path="/product/:id" element={<ProductDetail/>}/> 
+          <Route path="/item/:id" element={<ItemDetail/>} />
+          <Route path="/add" element={<ProductAdd />} />
+          <Route path="/edit/:id" element={<ProductEdit />} />
         </Route>
       </Routes>
     </BrowserRouter>

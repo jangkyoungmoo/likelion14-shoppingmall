@@ -17,7 +17,9 @@ const HeaderContainer = styled.div`
     padding-right: 160px;
     padding-left: 160px;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
+    align-items: center;
+    
 `;
 
 const Button = styled.div`
@@ -26,38 +28,65 @@ const Button = styled.div`
     font-family: Pretendard;
     font-weight: 400;
     margin-top: 9px;
+    &.active {
+        font-weight:400; 
+        color: #000;     
+    }
+
+    &:hover {
+        color: #222;
+    }
 `;
 
 const HeaderRight = styled.div`
     flex-direction: column;
-    justify-content: flex-start;
-    display: inline-flex;
+    display: flex;
     align-items: flex-end;
     gap: 36px;
 `;
 
+const TopMenu = styled.div`
+    top: -20px;  
+    right: 0;
+`;
+    const BottomMenu = styled.div`
+    display: flex;
+    align-items: center;
+    height: 40px;
+`;
+
 export default function Header(){
 
-    const {pathname} = useLocation(); 
+    const {pathname} = useLocation();
     const navigate = useNavigate();
     const buttonName = "상품등록";
+    const isAddPage = pathname === "/add";
 
-    return(
+    return (
         <div>
             <HeaderContainer>
-                <LogoImage src={logoUrl}/>
+                <LogoImage 
+                    src={logoUrl} 
+                    onClick={() => navigate("/")} 
+                    style={{ cursor: 'pointer' }} 
+                >
+                </LogoImage>
                 <HeaderRight>
-                    {pathname === "/" && (
-                        <Button onClick={()=>navigate("/add")}>{buttonName}</Button>
-                    )}
-                    <HomeIcon src={homeUrl}/>
+                    <TopMenu>
+                        {(pathname === "/" || pathname === "/add") && (
+                            <Button 
+                                onClick={() => navigate("/add")}
+                                className={isAddPage ? "active" : ""}
+                            >
+                                {buttonName}
+                            </Button>
+                        )}
+                    </TopMenu>
+                    <BottomMenu onClick={() => navigate("/")} style={{ cursor: 'pointer' }}>
+                        <HomeIcon src={homeUrl}/>
+                    </BottomMenu>
                 </HeaderRight>
             </HeaderContainer>
         </div>
     );
 }
-
-
-
-
-
