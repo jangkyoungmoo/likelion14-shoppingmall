@@ -1,8 +1,19 @@
 import styled from "styled-components";
 import React, { useState, useRef } from "react";
 import arrowIcon2 from "../../assets/images/arrow_image4.png";
+import {createItem} from "../../api/shop.js";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductAdd() {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+    name: "",
+    rating: "",
+    reviews: "",
+    price: "",
+    size: "",
+    });
+
     const [selectedType, setSelectedType] = useState("");
     const [selectedGender, setSelectedGender] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
@@ -11,6 +22,14 @@ export default function ProductAdd() {
     const colors = ["red", "pink", "blue", "gray", "black", "denim", "multi", "rainbow", "holographic"];
     const handleBoxClick = () => {
     fileInputRef.current.click();
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleFileChange = (event) => {
@@ -23,6 +42,34 @@ export default function ProductAdd() {
       reader.readAsDataURL(file);
     }
   };
+
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.price || !selectedType || !selectedGender || !selectedColor || !selectedImage) {
+      alert("모든 필드를 입력해주세요.");
+      return;
+    }
+
+    const newItem = {
+      ...formData,
+      image: selectedImage,
+      type: selectedType,
+      gender: selectedGender,
+      color: selectedColor,
+      price: Number(formData.price),
+      rating: Number(formData.rating),
+      reviews: Number(formData.reviews),
+    };
+
+    try {
+      await createItem("clothes", newItem);
+      alert("상품이 성공적으로 등록되었습니다.");
+      navigate("/");
+    } catch (error) {
+      console.error("상품 등록 실패:", error);
+      alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
   
     return (
     <Container>
@@ -57,27 +104,27 @@ export default function ProductAdd() {
           
           <InputGroup>
             <label>상품명</label>
-            <input type="text" placeholder="" />
+            <input name="name" type="text" value={formData.name} onChange={handleInputChange} />
           </InputGroup>
 
           <InputGroup>
             <label>평점</label>
-            <input type="text" placeholder="" />
+            <input name="rating" type="text" value={formData.rating} onChange={handleInputChange} />
           </InputGroup>
 
           <InputGroup>
             <label>리뷰수</label>
-            <input type="text" placeholder="" />
+            <input name="reviews" type="text" value={formData.reviews} onChange={handleInputChange} />
           </InputGroup>
 
           <InputGroup>
             <label>가격</label>
-            <input type="text" placeholder="" />
+            <input name="price" type="text" value={formData.price} onChange={handleInputChange} />
           </InputGroup>
 
           <InputGroup>
             <label>사이즈</label>
-            <input type="text" placeholder="" />
+            <input name="size" type="text" value={formData.size} onChange={handleInputChange} />
           </InputGroup>
 
 
@@ -129,7 +176,7 @@ export default function ProductAdd() {
             </div>
           </ButtonGroup>
 
-          <SubmitButton>상품 등록 완료</SubmitButton>
+          <SubmitButton onClick={handleSubmit}>상품 등록 완료</SubmitButton>
         </FormCard>
       </FormSection>
     </Container>

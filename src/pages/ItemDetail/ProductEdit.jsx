@@ -2,8 +2,10 @@ import styled from "styled-components";
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import arrowIcon3 from "../../assets/images/arrow_image5.png";
+import {updateItem} from "../../api/shop.js";
+import {patchItem} from "../../api/shop.js";
 
-export default function ProductEdit() {
+export default function ProductEdit(){
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,7 +35,50 @@ export default function ProductEdit() {
       reader.readAsDataURL(file);
     }
   };
-  
+
+  const handlePatchUpdate = async () => {
+    const changeData = {};
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== initialData[key]) {
+        changeData[key] = formData[key];
+      }
+    });
+
+    if (Object.keys(changeData).length === 0) {
+      alert("수정할 내용이 없습니다.");
+      return;
+    }
+
+    try {
+      if (Object.keys(changeData).length <= 2) {
+        console.log("부분 수정을 실행합니다.");
+
+        if (changeData.price) changeData.price = Number(changeData.price);
+        if (changeData.rating) changeData.rating = Number(changeData.rating);
+        if (changeData.reviewCount) changeData.reviews = Number(changeData.reviewCount);
+
+        await patchItem("clothes", id, changeData);
+      } else {
+        console.log("전체 수정을 실행합니다.");
+
+        const updatedData = {
+          ...formData,
+          price: Number(formData.price),
+          rating: Number(formData.rating),
+          reviews: Number(formData.reviewCount),
+        };
+        
+        await updateItem("clothes", id, updatedData);
+      }
+
+      alert("상품 정보가 성공적으로 수정되었습니다.");
+      navigate(`/item/${id}`);
+
+    } catch (error) {
+      console.error("수정 중 오류 발생:", error);
+      alert("수정에 실패했습니다.");
+    }
+  };
     return (
     <Container>
       <TopMenuWrapper>
@@ -135,7 +180,7 @@ export default function ProductEdit() {
             </div>
           </ButtonGroup>
 
-          <SubmitButton>
+          <SubmitButton onClick={handlePatchUpdate}>
             상품 수정 완료
           </SubmitButton>
         </FormCard>

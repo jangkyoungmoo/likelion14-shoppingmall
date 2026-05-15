@@ -2,12 +2,15 @@ import { useState } from "react";
 import styled from "styled-components";
 import { productData } from "../../data/Products.jsx"; 
 //import { MockData } from "../../data/MockData.jsx";
+import { getItems } from "../../api/shop.js";
+import { useEffect } from "react";
 import FilterBar from "./FilterBar";
 import ProductCard from "./ProductCard";
 import FilterModal from "./FilterModal";
 import sortIcon from "../../assets/images/arrow_image2.png";
 import checkIcon from "../../assets/images/arrow_image1.png";
 import SortDropdown from "./SortDropdown";
+
 
 const MainContainer = styled.div`
   padding: 40px 160px;
@@ -47,10 +50,28 @@ export default function Main() {
     const [modalType, setModalType] = useState(null);
     const [isSortOpen, setIsSortOpen] = useState(false);
     const [selectedGender, setSelectedGender] = useState("전체");
+    const [currentSort, setCurrentSort] = useState("기본 정렬순");
     const displayedProducts = productData.filter(item => {
         if (selectedGender === "전체") return true;
         return item.gender === selectedGender;
     });
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+      let cancellde = false;
+      (async () => {
+        try {
+          const res = await getItems("clothes");
+          if (!cancellde) setItems(Array.isArray(res) ? res : []);
+        } catch{
+          if (!cancellde) setItems([]);
+        }
+      })();
+
+      return () => {
+        cancellde = true;
+      };
+    }, []);
 
   return (
     <MainContainer>
@@ -83,7 +104,6 @@ export default function Main() {
       }}
     />
     
-    
     <SortDropdown 
       currentSort={currentSort}
       onSelect={(name) => {
@@ -94,6 +114,7 @@ export default function Main() {
     />
   </>
 )}
+
         </SortSection>
       </FilterAndSortRow>
       {modalType && (
@@ -102,15 +123,21 @@ export default function Main() {
           onClose={() => setModalType(null)}
           onSelect={(value) => {
                         setSelectedGender(value);
-                        setModalType(null);
                     }}
         />
       )}
       <ProductGrid>
-        {displayedProducts.map((item) => (
-                    <ProductCard key={item.id} item={item} />
-                ))}
+        {items.map((item) => (
+            <ProductCard
+            key={item.id}
+            itemId={item.id}
+            image={item.image}
+            name={item.name}
+            price={`${Number(item.price).toLocaleString()}원`}
+            reviewCount={item.reviews}
+          />
+        ))}
       </ProductGrid>
-    </MainContainer>
+    </MainContainer> 
   );
 }

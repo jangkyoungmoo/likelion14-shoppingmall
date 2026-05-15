@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import logoUrl from "../../assets/images/kream_image.png"
-import homeUrl from "../../assets/icons/home_icon.png"
-import {useLocation, useNavigate} from "react-router-dom";
+import logoUrl from "../../assets/images/kream_image.png";
+import homeUrl from "../../assets/icons/home_icon.png";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LogoImage = styled.img`
     width: 166px;
@@ -19,7 +19,6 @@ const HeaderContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
 `;
 
 const Button = styled.div`
@@ -28,11 +27,11 @@ const Button = styled.div`
     font-family: Pretendard;
     font-weight: 400;
     margin-top: 9px;
+    cursor: pointer;
     &.active {
-        font-weight:400; 
+        font-weight: 400; 
         color: #000;     
     }
-
     &:hover {
         color: #222;
     }
@@ -49,18 +48,23 @@ const TopMenu = styled.div`
     top: -20px;  
     right: 0;
 `;
-    const BottomMenu = styled.div`
+
+const BottomMenu = styled.div`
     display: flex;
     align-items: center;
     height: 40px;
 `;
 
-export default function Header(){
-
-    const {pathname} = useLocation();
+export default function Header() {
+    const { pathname } = useLocation();
     const navigate = useNavigate();
     const buttonName = "상품등록";
     const isAddPage = pathname === "/add";
+
+
+    const handlePost = () => {
+        navigate("/add");
+    };
 
     return (
         <div>
@@ -69,13 +73,12 @@ export default function Header(){
                     src={logoUrl} 
                     onClick={() => navigate("/")} 
                     style={{ cursor: 'pointer' }} 
-                >
-                </LogoImage>
+                />
                 <HeaderRight>
                     <TopMenu>
                         {(pathname === "/" || pathname === "/add") && (
                             <Button 
-                                onClick={() => navigate("/add")}
+                                onClick={handlePost} 
                                 className={isAddPage ? "active" : ""}
                             >
                                 {buttonName}
