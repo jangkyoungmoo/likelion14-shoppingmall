@@ -33,12 +33,11 @@ const Card = styled.div`
       font-family: Pretendard; 
       color: #333; 
       font-weight: 400; 
-      margin-bottom: 4px; /
+      margin-bottom: 4px; 
       line-height: 1.2;
     }
 
     .price { 
-      display: block;
       color: #000; 
       font-family: Pretendard;
       font-size: 11px;
@@ -47,7 +46,6 @@ const Card = styled.div`
     }
 
     .review { 
-      display: block;
       color: #A7A7A7;
       font-family: Pretendard;
       font-size: 11px;
@@ -56,18 +54,18 @@ const Card = styled.div`
   }
 `;
 
-export default function ProductCard({ item }) {
+export default function ProductCard({ itemId, image, name, price, reviewCount }) {
   const navigate = useNavigate();
 
   return (
-    <Card onClick={() => navigate(`/item/${item.id}`)}>
+    <Card onClick={() => navigate(`/item/${itemId}`)}>
       <div className="img-box">
-        <img src={item.image} alt={item.name} />
+        <img src={image} alt={name} />
       </div>
       <div className="info-box">
-        <div className="name">{item.name}</div>
-        <div className="price">{item.price}원</div>
-        <div className="review">리뷰 {item.reviewCount}</div>
+        <div className="name">{name}</div>
+        <div className="price">{price}</div>
+        <div className="review">리뷰 {reviewCount}</div>
       </div>
     </Card>
   );
